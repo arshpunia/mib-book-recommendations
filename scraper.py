@@ -6,7 +6,7 @@ class BrickSetSpider(scrapy.Spider):
     name = "brickset_spider"
     base_url = 'https://ritholtz.com/page/'
     url_list = []
-    for i in range(1,1001):
+    for i in range(1,51):
         page_url = base_url+str(i)+'/'
         url_list.append(page_url)
         
