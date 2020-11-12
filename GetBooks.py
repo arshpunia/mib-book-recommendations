@@ -30,6 +30,6 @@ class BookNamesSpider(scrapy.Spider):
                 
                     
                 if "amazon" in link:
-                    if not (text is None):
-                        f.write(link+'\n')
+                    if not (text is None) and not (link[40]=='B'):
+                        f.write(link[40:50]+'\t'+text+'\n')
             

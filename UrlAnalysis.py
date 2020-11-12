@@ -14,13 +14,42 @@ def calculate_podcast_factor():
                 pod_fac[url] = 1
     return pod_fac
 
-def look_up_isbn(isbn_code):
+def get_authors(isbn_code):
     api_endpoint = 'https://openlibrary.org/api/books?bibkeys=ISBN:'+isbn_code+'&jscmd=data&format=json'
     
     res = requests.get(api_endpoint)
-    json_rep = res.json()['ISBN:'+isbn_code]['title']
-    print(str(json_rep))
     
+    book_authors_list = res.json()['ISBN:'+isbn_code]['authors']
+    authors_list = []
+    for author in book_authors_list:
+        authors_list.append(author['name'])
+    
+    return authors_list
+    
+def get_book_title(isbn_code):
+    api_endpoint = 'https://openlibrary.org/api/books?bibkeys=ISBN:'+isbn_code+'&jscmd=data&format=json'
+    
+    res = requests.get(api_endpoint)
+    print(str(res))
+    print(str(res.json()))
+    
+    if 'subtitle' in res.json()['ISBN:'+isbn_code]:
+        book_title = res.json()['ISBN:'+isbn_code]['title']+': '+res.json()['ISBN:'+isbn_code]['subtitle']
+    else:
+        book_title = res.json()['ISBN:'+isbn_code]['title']
+        
+    print(str(book_title))
+
+def bla():
+    with open('AmazonLinks.txt','r') as f:
+        isbn_lines = f.readlines()
+        for line in isbn_lines:
+            
+            isbn = line[0:10].strip('\n')
+            print(str(isbn))
+            authors_list = get_authors(isbn)
+            print(line[10:]+'\t'+str(authors_list))
+
 def main():
     """
     abc = calculate_podcast_factor()
@@ -28,7 +57,8 @@ def main():
         for key in abc:
             f.write(key+'\n')
     """
-    look_up_isbn('0385545800')
+    ##get_book_title('038535147X')
+    bla()
     
 if __name__=="__main__":
     main()
